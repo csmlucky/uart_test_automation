@@ -151,14 +151,9 @@ python cmd_wr_verify.py dispverify   --port /dev/ttyUSB0 --baud 115200 --dispcmd
 
 ---
 
-## Troubleshooting
+## Serial Port Settings & Command Format
 
-| Problem | Cause | Fix |
-|--------|-------|-----|
-| No response / timeout | Device too slow | Increase delay in script (`time.sleep`) |
-| All FAIL, but device works | Whitespace mismatch | Ensure `serial_rw.read_serial_port()` strips `\r\n` |
-| Permission denied on `/dev/tty*` | Serial access restricted | Add user to `dialout` group or use `sudo` |
-| Wrong baud rate | Device mismatch | Ensure baud matches what the device expects |
+This project communicates over a serial port using the following defaults: **8N1** framing (8 data bits, no parity, 1 stop bit), and each command is automatically terminated with `\r\n` (CRLF). Encoding is **UTF-8** unless specified otherwise. For example, sending the command `id` results in `id\r\n` being transmitted over the serial connection. If you need to modify the communication parameters or the line ending behavior, you can change these settings inside the `serial_rw.py` file.
 
 ---
 
