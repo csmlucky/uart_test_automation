@@ -70,7 +70,7 @@ def dispverify_mode(ser, dispcmdpath):
     print("disp result file path:", resultpath)
     with resultpath.open("w", encoding="utf-8") as result:
         result.write("cOMMAND:\tPASS/FAIL:\n")
-    with dispcmdpath.open("r", encoding="utf-8") as f:
+    with dispcmdpath.open("r", encoding="utf-8") as f, resultpath.open("a", encoding="utf-8") as result:
       
         first_line = f.readline().strip()
         if not first_line:
@@ -89,13 +89,13 @@ def dispverify_mode(ser, dispcmdpath):
             if not line or line.startswith("#"):
                 continue 
             dispcmd = line.strip().split()
-            with resultpath.open("a", encoding="utf-8") as result:
-                if len(dispcmd) != 1:
-                    print(f"len of the cmd: {len(dispcmd)}")
-                    result.write(f"{dispcmd[0]} is not valid\n")
-                    continue
-                status = dcp.dispcmdprocesser(ser, lcvalue, dispcmd[0])
-                result.write(f"{dispcmd[0]}\t{status}"+"\n")
+            
+            if len(dispcmd) != 1:
+                print(f"len of the cmd: {len(dispcmd)}")
+                result.write(f"{dispcmd[0]} is not valid\n")
+                continue
+            status = dcp.dispcmdprocesser(ser, lcvalue, dispcmd[0])
+            result.write(f"{dispcmd[0]}\t{status}"+"\n")
     s.close_serial_port(ser)        
     return True
                 
